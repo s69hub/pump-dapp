@@ -1,0 +1,40 @@
+.main {
+  background-image: url("./images/bg.png");
+  background-size: cover;
+  width: 100vw;
+  height: 100vh;
+}
+
+.btn-primary {
+  border: none !important;
+  background: linear-gradient(284.56deg, #00C9FF 6.04%, #974CE2 59.67%, #F200D0 93.96%) !important;
+  box-shadow: 0px 0px 10px #021a20b4 !important;
+  text-shadow: 0px 0px 3px #021a20 !important;
+  border-radius: 1.25rem ;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  box-shadow: 0px 0px 10px #00C9FF !important;
+  text-shadow: 0px 0px 5px #021a20 !important;
+  transition: all 0.3s ease;
+}
+
+.nav-link {
+  color: #fff !important;
+}
+
+.card {
+  color: #fff !important;
+  background: none;
+  border-radius: 3rem;
+  border: 2px solid #fff !important;
+}
+
+.text-gray {
+  color: rgb(172, 172, 172) !important;
+}
+
+.fw-400{
+  font-weight: 400 !important;
+}
