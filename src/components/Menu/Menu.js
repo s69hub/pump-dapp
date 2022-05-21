@@ -2,6 +2,7 @@ import React from "react";
 import { Navbar, Container, Nav, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import pump from "../../images/pump.svg";
+import Balances from "../Balances/Balances";
 import Wallet from "../Wallet/Wallet";
 
 export default function Menu() {
@@ -28,15 +29,7 @@ export default function Menu() {
             </Link>
           </Nav>
           <Nav className="me-0 ms-auto pe-md-3">
-            {/* <Link to="/stake" className="nav-link pe-md-5">
-              Stake
-            </Link>
-            <Link to="/" className="nav-link pe-md-5">
-              Home
-            </Link> */}
-            <small className="text-center pe-md-4 pb-3 pb-md-0 text-gray fw-400">
-              1024.3506 $PMP <br /> 327.32 $xUSD
-            </small>
+            <Balances />
             <Wallet />
           </Nav>
         </Navbar.Collapse>

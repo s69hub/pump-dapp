@@ -11,10 +11,60 @@ import {
 import pump from "../../images/pump.svg";
 import logo from "../../images/logo.svg";
 import xusd from "../../images/xusd.svg";
+import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
+import { stakeABI, unstakeABI, claimRewardsABI } from "./StakingContractABI";
 
 function Stake() {
   const [stakeStep, setStakeStep] = useState(0);
   const [claimStep, setClaimStep] = useState(0);
+
+  const [stakeAmount, setStakeAmount] = useState(0);
+  const [claimAmount, setClaimAmount] = useState(0);
+
+  const { user } = useMoralis();
+  const contractProcessor = useWeb3ExecuteFunction();
+
+  const stake = {
+    contractAddress: "0x8dBC995946ad745dD77186d1aC10019b8Ea6694A",
+    functionName: "stake",
+    abi: stakeABI,
+    params: { amount: stakeAmount },
+  };
+
+  const unstake = {
+    contractAddress: "0x8dBC995946ad745dD77186d1aC10019b8Ea6694A",
+    functionName: "unstake",
+    abi: unstakeABI,
+    params: { amount: stakeAmount },
+  };
+
+  const claimRewards = {
+    contractAddress: "0x8dBC995946ad745dD77186d1aC10019b8Ea6694A",
+    functionName: "claimRewards",
+    abi: claimRewardsABI,
+    params: {},
+  };
+
+  const fetchStake = async () => {
+    await contractProcessor
+      .fetch({ params: stake })
+      .then(() => setStakeStep(0));
+    //setSuccessModalVisible(true);
+  };
+
+  const fetchUnstake = async () => {
+    await contractProcessor
+      .fetch({ params: unstake })
+      .then(() => setStakeStep(0));
+    //setSuccessModalVisible(true);
+  };
+
+  const fetchClaim = async () => {
+    await contractProcessor
+      .fetch({ params: claimRewards })
+      .then(() => setClaimStep(0));
+    //setSuccessModalVisible(true);
+  };
 
   return (
     <>
@@ -64,6 +114,7 @@ function Stake() {
                   <>
                     <InputGroup className="mt-3 px-4" size="lg">
                       <FormControl
+                        onChange={(e) => setStakeAmount(e.target.value)}
                         type="number"
                         placeholder="Enter $PMP Amount"
                         aria-label="Enter $PMP Amount"
@@ -73,7 +124,7 @@ function Stake() {
                         }}
                       />
                       <Button
-                        onClick={() => setStakeStep(0)}
+                        onClick={fetchStake}
                         variant="primary"
                         style={{
                           borderTopRightRadius: "1.25rem",
@@ -90,6 +141,7 @@ function Stake() {
                   <>
                     <InputGroup className="mt-3 px-4" size="lg">
                       <FormControl
+                        onChange={(e) => setStakeAmount(e.target.value)}
                         type="number"
                         placeholder="Enter $PMP Amount"
                         aria-label="Enter $PMP Amount"
@@ -99,7 +151,7 @@ function Stake() {
                         }}
                       />
                       <Button
-                        onClick={() => setStakeStep(0)}
+                        onClick={fetchUnstake}
                         variant="primary"
                         style={{
                           borderTopRightRadius: "1.25rem",
@@ -140,6 +192,7 @@ function Stake() {
                   <>
                     <InputGroup className="mt-3 px-4" size="lg">
                       <FormControl
+                        onChange={(e) => setClaimAmount(e.target.value)}
                         type="number"
                         placeholder="Enter $xUSD Amount"
                         aria-label="Enter $xUSD Amount"
@@ -149,7 +202,7 @@ function Stake() {
                         }}
                       />
                       <Button
-                        onClick={() => setClaimStep(0)}
+                        onClick={fetchClaim}
                         variant="primary"
                         style={{
                           borderTopRightRadius: "1.25rem",

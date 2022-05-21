@@ -16,12 +16,32 @@ function Wallet() {
   const { switchNetwork } = useChain();
   const { authenticate, isAuthenticated, user, chainId } = useMoralis();
 
-  const login = async () => {
+  const metamaskConnect = async () => {
     setButtonText("Connecting...");
     await authenticate()
       .then(function (user, chainId) {
         const userAddress = getEllipsisTxt(user.get("ethAddress"), 4);
-        if (chainId === 56) {
+        if (chainId === 56 || 0x38) {
+          setButtonText(userAddress);
+          setShow(false);
+        } else {
+          setButtonText("Wrong network");
+          switchNetwork(0x38)
+            .then(() => setButtonText(userAddress))
+            .catch(() => setButtonText("Wrong network"));
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  const walletConnect = async () => {
+    setButtonText("Connecting...");
+    await authenticate({ provider: "walletConnect", chainId: 56 })
+      .then(function (user, chainId) {
+        const userAddress = getEllipsisTxt(user.get("ethAddress"), 4);
+        if (chainId === 56 || 0x38) {
           setButtonText(userAddress);
           setShow(false);
         } else {
@@ -55,13 +75,15 @@ function Wallet() {
           <Container className="text-center">
             <Row>
               <Col lg={6}>
-                <a onClick={login} href="#">
+                <a onClick={metamaskConnect} href="#">
                   <img src={metamask} alt="MetaMask" width={170} />
                 </a>
               </Col>
-              {/* <Col lg={6}>
-                <img src={walletconnect} alt="WalletConnect" width={190} />
-              </Col> */}
+              <Col lg={6}>
+                <a onClick={walletConnect} href="#">
+                  <img src={walletconnect} alt="WalletConnect" width={190} />
+                </a>
+              </Col>
             </Row>
           </Container>
         </Modal.Body>
