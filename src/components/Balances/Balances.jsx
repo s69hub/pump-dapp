@@ -5,21 +5,21 @@ import pmpABI from "./pmpABI";
 import xusdABI from "./xusdABI";
 
 function Balances() {
-  const { user, account } = useMoralis();
+  const { account } = useMoralis();
   const contractProcessor = useWeb3ExecuteFunction();
 
   const pmp = {
-    contractAddress: "0x8dBC995946ad745dD77186d1aC10019b8Ea6694A",
+    contractAddress: process.env.REACT_APP_PMP_CONTRACT,
     functionName: "balanceOf",
     abi: pmpABI,
-    params: { account: user?.get("ethAddress") },
+    params: { account: account },
   };
 
   const xusd = {
-    contractAddress: "0x8dBC995946ad745dD77186d1aC10019b8Ea6694A",
+    contractAddress: process.env.REACT_APP_XUSD_CONTRACT,
     functionName: "balanceOf",
     abi: xusdABI,
-    params: { account: user?.get("ethAddress") },
+    params: { account: account },
   };
 
   const [pmpTxt, setPmpTxt] = useState(0);
@@ -34,7 +34,7 @@ function Balances() {
 
   useEffect(() => {
     fetchBalances();
-  }, [user]);
+  }, [account]);
 
   return (
     <>

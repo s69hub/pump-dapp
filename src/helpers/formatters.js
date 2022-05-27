@@ -25,3 +25,6 @@ export const c2 = new Intl.NumberFormat("en-us", {
 
 export const tokenValue = (value, decimals) =>
   decimals ? value / Math.pow(10, decimals) : value;
+
+export const addDecimals = (value, decimals) =>
+  decimals ? value * Math.pow(10, decimals) : value;

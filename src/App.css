@@ -38,3 +38,11 @@
 .fw-400{
   font-weight: 400 !important;
 }
+
+.text-right{
+  text-align: right !important;
+}
+
+.btn-wide{
+  width: 100% !important;
+}

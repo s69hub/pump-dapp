@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Card,
@@ -7,64 +7,117 @@ import {
   Row,
   InputGroup,
   FormControl,
+  Modal,
 } from "react-bootstrap";
+
 import pump from "../../images/pump.svg";
 import logo from "../../images/logo.svg";
 import xusd from "../../images/xusd.svg";
 import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
-import { stakeABI, unstakeABI, claimRewardsABI } from "./StakingContractABI";
+import SuccessModal from "../SuccessModal/SuccessModal";
+import { addDecimals } from "../../helpers/formatters";
+import approveABI from "./ApproveABI";
+import stakeABI from "./StakeABI";
+import unstakeABI from "./UnstakeABI";
+import claimABI from "./ClaimABI";
+
+/* global BigInt */
 
 function Stake() {
+  const [isApproved, setIsApproved] = useState(false);
   const [stakeStep, setStakeStep] = useState(0);
   const [claimStep, setClaimStep] = useState(0);
 
   const [stakeAmount, setStakeAmount] = useState(0);
   const [claimAmount, setClaimAmount] = useState(0);
 
-  const { user } = useMoralis();
+  const { user, Moralis } = useMoralis();
   const contractProcessor = useWeb3ExecuteFunction();
 
   const stake = {
-    contractAddress: "0x8dBC995946ad745dD77186d1aC10019b8Ea6694A",
+    contractAddress: process.env.REACT_APP_STAKING_CONTRACT,
     functionName: "stake",
     abi: stakeABI,
-    params: { amount: stakeAmount },
+    params: { amount: BigInt(stakeAmount) },
   };
 
   const unstake = {
-    contractAddress: "0x8dBC995946ad745dD77186d1aC10019b8Ea6694A",
-    functionName: "unstake",
+    contractAddress: process.env.REACT_APP_STAKING_CONTRACT,
+    functionName: "withdraw",
     abi: unstakeABI,
-    params: { amount: stakeAmount },
+    params: { amount: BigInt(stakeAmount) },
   };
 
   const claimRewards = {
-    contractAddress: "0x8dBC995946ad745dD77186d1aC10019b8Ea6694A",
+    contractAddress: process.env.REACT_APP_STAKING_CONTRACT,
     functionName: "claimRewards",
-    abi: claimRewardsABI,
+    abi: claimABI,
     params: {},
   };
 
+  const approve = {
+    contractAddress: process.env.REACT_APP_PMP_CONTRACT,
+    functionName: "approve",
+    abi: approveABI,
+    params: {
+      spender: process.env.REACT_APP_STAKING_CONTRACT,
+      amount: BigInt(Math.pow(2, 128) - 1),
+    },
+  };
+
+  const handleStakeAmount = (e) => {
+    const amount = addDecimals(e.target.value, 18);
+    setStakeAmount(amount);
+  };
+
+  const fetchApprove = async () => {
+    await contractProcessor.fetch({
+      params: approve,
+      onError: (error) => {
+        console.log(error);
+      },
+      onSuccess: () => setIsApproved(true),
+    });
+  };
+
   const fetchStake = async () => {
-    await contractProcessor
-      .fetch({ params: stake })
-      .then(() => setStakeStep(0));
-    //setSuccessModalVisible(true);
+    await contractProcessor.fetch({
+      params: stake,
+      onSuccess: () => setStakeStep(0),
+    });
   };
 
   const fetchUnstake = async () => {
-    await contractProcessor
-      .fetch({ params: unstake })
-      .then(() => setStakeStep(0));
+    await contractProcessor.fetch({
+      params: unstake,
+      onSuccess: () => setStakeStep(0),
+    });
+
     //setSuccessModalVisible(true);
   };
 
   const fetchClaim = async () => {
-    await contractProcessor
-      .fetch({ params: claimRewards })
-      .then(() => setClaimStep(0));
-    //setSuccessModalVisible(true);
+    await contractProcessor.fetch({
+      params: claimRewards,
+      onSuccess: () => {
+        return (
+          <SuccessModal
+            msg="Successfully claimed rewards"
+            show="true"
+            size="sm"
+          />
+        );
+      },
+    });
   };
+
+  // useEffect(() => {
+  //   fetchAllowance().then((res) => {
+  //     if (res > 0) {
+  //       setIsApproved(true);
+  //     }
+  //   });
+  // }, [user]);
 
   return (
     <>
@@ -90,7 +143,22 @@ function Stake() {
                   <br />
                   100
                 </Card.Text>
-                {stakeStep === 0 && (
+                {isApproved === false && (
+                  <>
+                    <div className="px-5">
+                      <Button
+                        onClick={fetchApprove}
+                        variant="primary"
+                        size="lg"
+                        className="btn-wide"
+                      >
+                        Enable
+                      </Button>
+                    </div>
+                  </>
+                )}
+
+                {stakeStep === 0 && isApproved === true && (
                   <>
                     <Button
                       onClick={() => setStakeStep(1)}
@@ -114,7 +182,7 @@ function Stake() {
                   <>
                     <InputGroup className="mt-3 px-4" size="lg">
                       <FormControl
-                        onChange={(e) => setStakeAmount(e.target.value)}
+                        onChange={handleStakeAmount}
                         type="number"
                         placeholder="Enter $PMP Amount"
                         aria-label="Enter $PMP Amount"
@@ -141,7 +209,7 @@ function Stake() {
                   <>
                     <InputGroup className="mt-3 px-4" size="lg">
                       <FormControl
-                        onChange={(e) => setStakeAmount(e.target.value)}
+                        onChange={handleStakeAmount}
                         type="number"
                         placeholder="Enter $PMP Amount"
                         aria-label="Enter $PMP Amount"
@@ -179,39 +247,9 @@ function Stake() {
                 </Card.Text>
                 {claimStep === 0 && (
                   <>
-                    <Button
-                      onClick={() => setClaimStep(1)}
-                      variant="primary"
-                      size="lg"
-                    >
+                    <Button onClick={fetchClaim} variant="primary" size="lg">
                       Claim $xUSD
                     </Button>
-                  </>
-                )}
-                {claimStep === 1 && (
-                  <>
-                    <InputGroup className="mt-3 px-4" size="lg">
-                      <FormControl
-                        onChange={(e) => setClaimAmount(e.target.value)}
-                        type="number"
-                        placeholder="Enter $xUSD Amount"
-                        aria-label="Enter $xUSD Amount"
-                        style={{
-                          borderTopLeftRadius: "1.25rem",
-                          borderBottomLeftRadius: "1.25rem",
-                        }}
-                      />
-                      <Button
-                        onClick={fetchClaim}
-                        variant="primary"
-                        style={{
-                          borderTopRightRadius: "1.25rem",
-                          borderBottomRightRadius: "1.25rem",
-                        }}
-                      >
-                        Claim!
-                      </Button>
-                    </InputGroup>
                   </>
                 )}
               </Card.Body>

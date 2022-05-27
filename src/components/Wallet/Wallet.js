@@ -14,45 +14,60 @@ function Wallet() {
   const handleShow = () => setShow(true);
 
   const { switchNetwork } = useChain();
-  const { authenticate, isAuthenticated, user, chainId } = useMoralis();
+  const { authenticate, isAuthenticated, user, account, chainId, chain } =
+    useMoralis();
 
   const metamaskConnect = async () => {
     setButtonText("Connecting...");
-    await authenticate()
-      .then(function (user, chainId) {
+    await authenticate({
+      onSuccess: () => handleClose(),
+    })
+      .then(function () {
         const userAddress = getEllipsisTxt(user.get("ethAddress"), 4);
-        if (chainId === 56 || 0x38) {
+        if (chainId === process.env.REACT_APP_CHAIN_ID_HEX) {
+          handleClose();
           setButtonText(userAddress);
-          setShow(false);
         } else {
           setButtonText("Wrong network");
-          switchNetwork(0x38)
+          switchNetwork(process.env.REACT_APP_CHAIN_ID_HEX)
             .then(() => setButtonText(userAddress))
-            .catch(() => setButtonText("Wrong network"));
+            .catch(() => {
+              setButtonText("Wrong network");
+              handleClose();
+            });
         }
       })
       .catch(function (error) {
         console.log(error);
+        setButtonText("Connect Wallet");
       });
   };
 
   const walletConnect = async () => {
     setButtonText("Connecting...");
-    await authenticate({ provider: "walletConnect", chainId: 56 })
-      .then(function (user, chainId) {
+    await authenticate({
+      provider: "walletConnect",
+      chainId: 56,
+      onSuccess: () => handleClose(),
+    })
+      .then(function (user) {
         const userAddress = getEllipsisTxt(user.get("ethAddress"), 4);
-        if (chainId === 56 || 0x38) {
+        if (chainId === process.env.REACT_APP_CHAIN_ID_HEX) {
+          handleClose();
           setButtonText(userAddress);
-          setShow(false);
         } else {
           setButtonText("Wrong network");
-          switchNetwork(0x38)
+          switchNetwork(process.env.REACT_APP_CHAIN_ID_HEX)
             .then(() => setButtonText(userAddress))
-            .catch(() => setButtonText("Wrong network"));
+            .catch(() => {
+              setButtonText("Wrong network");
+              handleClose();
+            });
         }
       })
       .catch(function (error) {
         console.log(error);
+        setButtonText("Connect Wallet");
       });
   };
 
