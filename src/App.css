@@ -46,3 +46,10 @@
 .btn-wide{
   width: 100% !important;
 }
+
+.card-inner{
+  color: #fff !important;
+  background: #974ce25d !important;
+  border-radius: 1.5rem;
+  border: 1px solid #fff !important;
+}

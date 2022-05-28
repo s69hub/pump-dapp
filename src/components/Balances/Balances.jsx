@@ -34,8 +34,13 @@ function Balances() {
     setXusdTxt(xusdBalance?.toString() / 10 ** 18);
   };
 
+
   useEffect(() => {
+    const interval = setInterval(() => {
+      fetchBalances();
+    }, 15000);
     fetchBalances();
+    return () => clearInterval(interval);
   }, [account, refresh]);
 
   return (

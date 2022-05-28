@@ -18,11 +18,11 @@ import { addDecimals } from "../../helpers/formatters";
 import pendingRewardsABI from "./PendingRewardsABI";
 import approveABI from "./ApproveABI";
 import stakeABI from "./StakeABI";
-import unstakeABI from "./UnstakeABI";
 import claimABI from "./ClaimABI";
 import allowanceABI from "./AllowanceABI";
 import { StateContext } from "../../contexts/StateContext";
 import PmpStaked from "../PmpStaked/PmpStaked";
+import Unstake from "../Unstake/Unstake";
 
 /* global BigInt */
 
@@ -62,13 +62,6 @@ function Stake() {
     contractAddress: process.env.REACT_APP_STAKING_CONTRACT,
     functionName: "stake",
     abi: stakeABI,
-    params: { amount: BigInt(stakeAmount) },
-  };
-
-  const unstake = {
-    contractAddress: process.env.REACT_APP_STAKING_CONTRACT,
-    functionName: "withdraw",
-    abi: unstakeABI,
     params: { amount: BigInt(stakeAmount) },
   };
 
@@ -137,17 +130,6 @@ function Stake() {
     });
   };
 
-  const fetchUnstake = async () => {
-    await contractProcessor.fetch({
-      params: unstake,
-      onSuccess: () => {
-        setStakeStep(0);
-        setRefresh(refresh + 1);
-      },
-      // onSuccess: () => setUnstakeSuccessModalVisible(true),
-    });
-  };
-
   const fetchClaim = async () => {
     await contractProcessor.fetch({
       params: claimRewards,
@@ -188,7 +170,7 @@ function Stake() {
                     {pmpStaked} */}
                   <PmpStaked />
                 </Card.Text>
-                {isApproved === false && (
+                {isApproved === false && stakeStep === 0 && (
                   <>
                     <div className="px-5">
                       <Button
@@ -250,32 +232,7 @@ function Stake() {
                   </>
                 )}
 
-                {stakeStep === 2 && (
-                  <>
-                    <InputGroup className="mt-3 px-4" size="lg">
-                      <FormControl
-                        onChange={handleStakeAmount}
-                        type="number"
-                        placeholder="Enter $PMP Amount"
-                        aria-label="Enter $PMP Amount"
-                        style={{
-                          borderTopLeftRadius: "1.25rem",
-                          borderBottomLeftRadius: "1.25rem",
-                        }}
-                      />
-                      <Button
-                        onClick={fetchUnstake}
-                        variant="primary"
-                        style={{
-                          borderTopRightRadius: "1.25rem",
-                          borderBottomRightRadius: "1.25rem",
-                        }}
-                      >
-                        Unstake!
-                      </Button>
-                    </InputGroup>
-                  </>
-                )}
+                {stakeStep === 2 && <Unstake setStakeStep={setStakeStep} />}
               </Card.Body>
             </Card>
           </Col>
