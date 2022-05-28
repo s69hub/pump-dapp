@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Button, Container, Col, Row, Modal } from "react-bootstrap";
 import { useChain, useMoralis } from "react-moralis";
-
 import metamask from "../../images/metamask.svg";
 import walletconnect from "../../images/walletconnect.svg";
 

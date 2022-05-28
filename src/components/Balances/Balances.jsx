@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Button } from "react-bootstrap";
 import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
 import pmpABI from "./pmpABI";
 import xusdABI from "./xusdABI";
+import { StateContext } from "../../contexts/StateContext";
 
 function Balances() {
+  const { refresh, setRefrest } = useContext(StateContext);
   const { account } = useMoralis();
   const contractProcessor = useWeb3ExecuteFunction();
 
@@ -34,7 +36,7 @@ function Balances() {
 
   useEffect(() => {
     fetchBalances();
-  }, [account]);
+  }, [account, refresh]);
 
   return (
     <>

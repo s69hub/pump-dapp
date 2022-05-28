@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Button,
   Card,
@@ -14,25 +14,57 @@ import pump from "../../images/pump.svg";
 import logo from "../../images/logo.svg";
 import xusd from "../../images/xusd.svg";
 import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
-import SuccessModal from "../SuccessModal/SuccessModal";
 import { addDecimals } from "../../helpers/formatters";
+import balanceOfABI from "./BalanceOfABI";
+import pendingRewardsABI from "./PendingRewardsABI";
 import approveABI from "./ApproveABI";
 import stakeABI from "./StakeABI";
 import unstakeABI from "./UnstakeABI";
 import claimABI from "./ClaimABI";
+import allowanceABI from "./AllowanceABI";
+import { StateContext } from "../../contexts/StateContext";
 
 /* global BigInt */
 
 function Stake() {
+  const { refresh, setRefresh } = useContext(StateContext);
+
   const [isApproved, setIsApproved] = useState(false);
   const [stakeStep, setStakeStep] = useState(0);
-  const [claimStep, setClaimStep] = useState(0);
 
   const [stakeAmount, setStakeAmount] = useState(0);
-  const [claimAmount, setClaimAmount] = useState(0);
 
-  const { user, Moralis } = useMoralis();
+  const [pmpStaked, setPmpStaked] = useState(0);
+  const [timeToUnlock, setTimeToUnlock] = useState(0);
+  const [rewards, setRewards] = useState(0);
+  const [earlyFee, setEarlyFee] = useState(0);
+
+  const { user, account } = useMoralis();
   const contractProcessor = useWeb3ExecuteFunction();
+
+  const balanceOf = {
+    contractAddress: process.env.REACT_APP_STAKING_CONTRACT,
+    functionName: "balanceOf",
+    abi: balanceOfABI,
+    params: { account: account },
+  };
+
+  const pendingRewards = {
+    contractAddress: process.env.REACT_APP_STAKING_CONTRACT,
+    functionName: "pendingRewards",
+    abi: pendingRewardsABI,
+    params: { shareholder: account },
+  };
+
+  const allowance = {
+    contractAddress: process.env.REACT_APP_PMP_CONTRACT,
+    functionName: "allowance",
+    abi: allowanceABI,
+    params: {
+      holder: account,
+      spender: process.env.REACT_APP_STAKING_CONTRACT,
+    },
+  };
 
   const stake = {
     contractAddress: process.env.REACT_APP_STAKING_CONTRACT,
@@ -70,6 +102,39 @@ function Stake() {
     setStakeAmount(amount);
   };
 
+  const fetchPmpStaked = async () => {
+    await contractProcessor.fetch({
+      params: balanceOf,
+      onSuccess: (result) => {
+        setPmpStaked(BigInt(result._hex).toString() / Math.pow(10, 18));
+      },
+    });
+  };
+
+  const fetchPendingRewards = async () => {
+    console.log("fetching pending rewards");
+    await contractProcessor.fetch({
+      params: pendingRewards,
+      onSuccess: (data) => {
+        console.log(BigInt(data._hex).toString() / Math.pow(10, 18));
+        setRewards(BigInt(data._hex).toString() / Math.pow(10, 18));
+      },
+    });
+  };
+
+  const fetchAllowance = async () => {
+    await contractProcessor.fetch({
+      params: allowance,
+      onSuccess: (result) => {
+        if (result.toString() > "0") {
+          setIsApproved(true);
+        } else {
+          setIsApproved(false);
+        }
+      },
+    });
+  };
+
   const fetchApprove = async () => {
     await contractProcessor.fetch({
       params: approve,
@@ -83,41 +148,39 @@ function Stake() {
   const fetchStake = async () => {
     await contractProcessor.fetch({
       params: stake,
-      onSuccess: () => setStakeStep(0),
+      onSuccess: () => {
+        setStakeStep(0);
+        setRefresh(refresh + 1);
+      },
+      // onSuccess: () => setStakeSuccessModalVisible(true),
     });
   };
 
   const fetchUnstake = async () => {
     await contractProcessor.fetch({
       params: unstake,
-      onSuccess: () => setStakeStep(0),
+      onSuccess: () => {
+        setStakeStep(0);
+        setRefresh(refresh + 1);
+      },
+      // onSuccess: () => setUnstakeSuccessModalVisible(true),
     });
-
-    //setSuccessModalVisible(true);
   };
 
   const fetchClaim = async () => {
     await contractProcessor.fetch({
       params: claimRewards,
-      onSuccess: () => {
-        return (
-          <SuccessModal
-            msg="Successfully claimed rewards"
-            show="true"
-            size="sm"
-          />
-        );
-      },
+      onSuccess: () => setRefresh(refresh + 1),
+
+      // onSuccess: () => setClaimSuccessModalVisible(true),
     });
   };
 
-  // useEffect(() => {
-  //   fetchAllowance().then((res) => {
-  //     if (res > 0) {
-  //       setIsApproved(true);
-  //     }
-  //   });
-  // }, [user]);
+  useEffect(() => {
+    fetchPmpStaked();
+    fetchPendingRewards();
+    fetchAllowance();
+  }, [user, account, refresh]);
 
   return (
     <>
@@ -141,7 +204,7 @@ function Stake() {
                 <Card.Text className="fs-4">
                   Total $PMP Staked
                   <br />
-                  100
+                  {pmpStaked}
                 </Card.Text>
                 {isApproved === false && (
                   <>
@@ -243,15 +306,11 @@ function Stake() {
                 <Card.Text className="fs-4">
                   Total xUSD Rewards
                   <br />
-                  100
+                  {rewards}
                 </Card.Text>
-                {claimStep === 0 && (
-                  <>
-                    <Button onClick={fetchClaim} variant="primary" size="lg">
-                      Claim $xUSD
-                    </Button>
-                  </>
-                )}
+                <Button onClick={fetchClaim} variant="primary" size="lg">
+                  Claim $xUSD
+                </Button>
               </Card.Body>
             </Card>
           </Col>
