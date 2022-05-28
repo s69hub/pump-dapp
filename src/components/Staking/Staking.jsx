@@ -34,9 +34,7 @@ function Stake() {
 
   const [stakeAmount, setStakeAmount] = useState(0);
 
-  const [timeToUnlock, setTimeToUnlock] = useState(0);
   const [rewards, setRewards] = useState(0);
-  const [earlyFee, setEarlyFee] = useState(0);
 
   const { user, account } = useMoralis();
   const contractProcessor = useWeb3ExecuteFunction();
@@ -166,8 +164,6 @@ function Stake() {
                 <Card.Text className="fs-4">
                   Total $PMP Staked
                   <br />
-                  {/* {(console.log("refreshing"), fetchPmpStaked())}
-                    {pmpStaked} */}
                   <PmpStaked />
                 </Card.Text>
                 {isApproved === false && stakeStep === 0 && (
@@ -200,12 +196,13 @@ function Stake() {
                       onClick={() => setStakeStep(2)}
                       variant="primary"
                       size="lg"
+                      disabled={(<PmpStaked />).pmpStaked === 0 ? true : false}
                     >
                       Unstake $PMP
                     </Button>
                   </>
                 )}
-                {stakeStep === 1 && (
+                {stakeStep === 1 && isApproved === true && (
                   <>
                     <InputGroup className="mt-3 px-4" size="lg">
                       <FormControl
@@ -232,7 +229,9 @@ function Stake() {
                   </>
                 )}
 
-                {stakeStep === 2 && <Unstake setStakeStep={setStakeStep} />}
+                {stakeStep === 2 && isApproved === true && (
+                  <Unstake setStakeStep={setStakeStep} />
+                )}
               </Card.Body>
             </Card>
           </Col>
