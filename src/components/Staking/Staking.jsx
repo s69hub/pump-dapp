@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import IntervalRenderer from "react-interval-renderer";
 import {
   Button,
   Card,
@@ -15,7 +16,6 @@ import logo from "../../images/logo.svg";
 import xusd from "../../images/xusd.svg";
 import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
 import { addDecimals } from "../../helpers/formatters";
-import balanceOfABI from "./BalanceOfABI";
 import pendingRewardsABI from "./PendingRewardsABI";
 import approveABI from "./ApproveABI";
 import stakeABI from "./StakeABI";
@@ -23,6 +23,7 @@ import unstakeABI from "./UnstakeABI";
 import claimABI from "./ClaimABI";
 import allowanceABI from "./AllowanceABI";
 import { StateContext } from "../../contexts/StateContext";
+import PmpStaked from "../PmpStaked/PmpStaked";
 
 /* global BigInt */
 
@@ -34,20 +35,12 @@ function Stake() {
 
   const [stakeAmount, setStakeAmount] = useState(0);
 
-  const [pmpStaked, setPmpStaked] = useState(0);
   const [timeToUnlock, setTimeToUnlock] = useState(0);
   const [rewards, setRewards] = useState(0);
   const [earlyFee, setEarlyFee] = useState(0);
 
   const { user, account } = useMoralis();
   const contractProcessor = useWeb3ExecuteFunction();
-
-  const balanceOf = {
-    contractAddress: process.env.REACT_APP_STAKING_CONTRACT,
-    functionName: "balanceOf",
-    abi: balanceOfABI,
-    params: { account: account },
-  };
 
   const pendingRewards = {
     contractAddress: process.env.REACT_APP_STAKING_CONTRACT,
@@ -102,21 +95,10 @@ function Stake() {
     setStakeAmount(amount);
   };
 
-  const fetchPmpStaked = async () => {
-    await contractProcessor.fetch({
-      params: balanceOf,
-      onSuccess: (result) => {
-        setPmpStaked(BigInt(result._hex).toString() / Math.pow(10, 18));
-      },
-    });
-  };
-
   const fetchPendingRewards = async () => {
-    console.log("fetching pending rewards");
     await contractProcessor.fetch({
       params: pendingRewards,
       onSuccess: (data) => {
-        console.log(BigInt(data._hex).toString() / Math.pow(10, 18));
         setRewards(BigInt(data._hex).toString() / Math.pow(10, 18));
       },
     });
@@ -177,7 +159,6 @@ function Stake() {
   };
 
   useEffect(() => {
-    fetchPmpStaked();
     fetchPendingRewards();
     fetchAllowance();
   }, [user, account, refresh]);
@@ -204,7 +185,9 @@ function Stake() {
                 <Card.Text className="fs-4">
                   Total $PMP Staked
                   <br />
-                  {pmpStaked}
+                  {/* {(console.log("refreshing"), fetchPmpStaked())}
+                    {pmpStaked} */}
+                  <PmpStaked />
                 </Card.Text>
                 {isApproved === false && (
                   <>
