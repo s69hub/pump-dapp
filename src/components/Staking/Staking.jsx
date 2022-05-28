@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import IntervalRenderer from "react-interval-renderer";
 import {
   Button,
   Card,
