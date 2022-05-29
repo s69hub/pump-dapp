@@ -1,7 +1,7 @@
 
 body {
   background-image: url("./images/bg.png");
-  background-size: stretch;
+  background-size: 100vw 100vh;
 }
 
 @media screen and (max-width: 960px) {
