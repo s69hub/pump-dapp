@@ -138,9 +138,13 @@ function Stake() {
   };
 
   useEffect(() => {
-    fetchPendingRewards();
+    const interval = setInterval(() => {
+      fetchPendingRewards();
+    }, 15000);
     fetchAllowance();
+    return () => clearInterval(interval);
   }, [user, account, refresh]);
+
 
   return (
     <>

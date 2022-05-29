@@ -13,7 +13,7 @@ function Wallet() {
   const handleShow = () => setShow(true);
 
   const { switchNetwork } = useChain();
-  const { authenticate, account, chainId } = useMoralis();
+  const { authenticate, user, chainId } = useMoralis();
 
   const metamaskConnect = async () => {
     setButtonText("Connecting...");
@@ -21,7 +21,7 @@ function Wallet() {
       onSuccess: () => handleClose(),
     })
       .then(function () {
-        const userAddress = getEllipsisTxt(account, 4);
+        const userAddress = getEllipsisTxt(user.get("ethAddress"), 4);
         if (chainId === process.env.REACT_APP_CHAIN_ID_HEX) {
           handleClose();
           setButtonText(userAddress);
