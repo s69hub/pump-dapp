@@ -45,6 +45,7 @@ function Wallet() {
     setButtonText("Connecting...");
     await authenticate({
       provider: "walletConnect",
+      chainId: process.env.REACT_APP_CHAIN_ID,
       onSuccess: () => handleClose(),
     })
       .then(function (user) {
