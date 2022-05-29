@@ -1,8 +1,14 @@
-.main {
+
+body {
   background-image: url("./images/bg.png");
-  background-size: cover;
-  width: 100vw;
-  height: 100vh;
+  background-size: stretch;
+}
+
+@media screen and (max-width: 960px) {
+  body {
+    background-image: url("./images/bg.png");
+    background-size: cover;
+  }
 }
 
 .btn-primary {

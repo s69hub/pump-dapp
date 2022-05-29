@@ -45,7 +45,6 @@ function Wallet() {
     setButtonText("Connecting...");
     await authenticate({
       provider: "walletConnect",
-      chainId: 56,
       onSuccess: () => handleClose(),
     })
       .then(function (user) {

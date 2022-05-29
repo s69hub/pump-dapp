@@ -7,16 +7,14 @@ import { StateProvider } from "./contexts/StateContext";
 
 function App() {
   return (
-    <div className="main">
-      <StateProvider>
-        <Router>
-          <Menu />
-          <Routes>
-            <Route path="/" element={<Staking />} />
-          </Routes>
-        </Router>
-      </StateProvider>
-    </div>
+    <StateProvider>
+      <Router>
+        <Menu />
+        <Routes>
+          <Route path="/" element={<Staking />} />
+        </Routes>
+      </Router>
+    </StateProvider>
   );
 }
 

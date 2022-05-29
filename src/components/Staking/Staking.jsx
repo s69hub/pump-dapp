@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import {
   Button,
   Card,
@@ -145,7 +145,6 @@ function Stake() {
     return () => clearInterval(interval);
   }, [user, account, refresh]);
 
-
   return (
     <>
       <Container className="pt-5">
@@ -159,7 +158,7 @@ function Stake() {
           </Col>
         </Row>
         <Row className="pt-5 mt-2">
-          <Col md={{ span: 5, offset: 1 }} className="text-center px-5">
+          <Col lg={{ span: 5, offset: 1 }} className="text-center px-5">
             <Card>
               <Card.Body className="pb-4">
                 <Card.Title className="pt-3">
@@ -186,25 +185,27 @@ function Stake() {
                 )}
 
                 {stakeStep === 0 && isApproved === true && (
-                  <>
-                    <Button
-                      onClick={() => setStakeStep(1)}
-                      variant="primary"
-                      size="lg"
-                      className="me-3"
-                    >
-                      Stake $PMP
-                    </Button>
+                  <Fragment>
+                    <div className="text-center">
+                      <Button
+                        onClick={() => setStakeStep(1)}
+                        variant="primary"
+                        size="lg"
+                        className="me-sm-3 me-md-3 me-lg-3 me-0"
+                      >
+                        Stake $PMP
+                      </Button>
 
-                    <Button
-                      onClick={() => setStakeStep(2)}
-                      variant="primary"
-                      size="lg"
-                      disabled={(<PmpStaked />).pmpStaked === 0 ? true : false}
-                    >
-                      Unstake $PMP
-                    </Button>
-                  </>
+                      <Button
+                        onClick={() => setStakeStep(2)}
+                        variant="primary"
+                        size="lg"
+                        className="mt-xs-3 mt-lg-3 mt-xl-0 mt-0"
+                      >
+                        Unstake $PMP
+                      </Button>
+                    </div>
+                  </Fragment>
                 )}
                 {stakeStep === 1 && isApproved === true && (
                   <>
@@ -239,7 +240,7 @@ function Stake() {
               </Card.Body>
             </Card>
           </Col>
-          <Col md={5} className="text-center px-5 pt-5 pt-md-0">
+          <Col lg={5} className="text-center px-5 pt-5 pt-lg-0 mb-5">
             <Card>
               <Card.Body className="pb-4">
                 <Card.Title className="pt-3">

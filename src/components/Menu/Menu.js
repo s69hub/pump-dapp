@@ -23,11 +23,11 @@ export default function Menu() {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
-          <Nav>
+          {/* <Nav>
             <Link to="/" className="nav-link">
               Home
             </Link>
-          </Nav>
+          </Nav> */}
           <Nav className="me-0 ms-auto pe-md-3">
             <Balances />
             <Wallet />
