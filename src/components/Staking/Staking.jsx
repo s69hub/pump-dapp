@@ -141,6 +141,7 @@ function Stake() {
     const interval = setInterval(() => {
       fetchPendingRewards();
     }, 3000);
+    fetchPendingRewards();
     fetchAllowance();
     return () => clearInterval(interval);
   }, [user, account, refresh]);
