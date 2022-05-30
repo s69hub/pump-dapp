@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Container, Col, Row, Modal } from "react-bootstrap";
 import { useChain, useMoralis } from "react-moralis";
 import metamask from "../../images/metamask.svg";
@@ -13,7 +13,7 @@ function Wallet() {
   const handleShow = () => setShow(true);
 
   const { switchNetwork } = useChain();
-  const { authenticate, user, chainId } = useMoralis();
+  const { authenticate, user, account, chainId } = useMoralis();
 
   const metamaskConnect = async () => {
     setButtonText("Connecting...");
@@ -68,6 +68,17 @@ function Wallet() {
         setButtonText("Connect Wallet");
       });
   };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (account) {
+        const userAddress = getEllipsisTxt(account, 4);
+        console.log(userAddress);
+        setButtonText(userAddress);
+      }
+    }, 5000);
+    return () => clearInterval(interval);
+  });
 
   return (
     <>
