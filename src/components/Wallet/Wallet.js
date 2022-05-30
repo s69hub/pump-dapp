@@ -21,7 +21,7 @@ function Wallet() {
       onSuccess: () => handleClose(),
     })
       .then(function () {
-        const userAddress = getEllipsisTxt(user.get("ethAddress"), 4);
+        const userAddress = getEllipsisTxt(account, 4);
         if (chainId === process.env.REACT_APP_CHAIN_ID_HEX) {
           handleClose();
           setButtonText(userAddress);
@@ -49,7 +49,7 @@ function Wallet() {
       onSuccess: () => handleClose(),
     })
       .then(function (user) {
-        const userAddress = getEllipsisTxt(user.get("ethAddress"), 4);
+        const userAddress = getEllipsisTxt(account, 4);
         if (chainId === process.env.REACT_APP_CHAIN_ID_HEX) {
           handleClose();
           setButtonText(userAddress);
@@ -70,15 +70,13 @@ function Wallet() {
   };
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (account) {
-        const userAddress = getEllipsisTxt(account, 4);
-        console.log(userAddress);
-        setButtonText(userAddress);
-      }
-    }, 5000);
-    return () => clearInterval(interval);
-  });
+    if (!account) {
+      setButtonText("Connect Wallet");
+    } else {
+      const userAddress = getEllipsisTxt(account, 4);
+      setButtonText(userAddress);
+    }
+  }, [account, user]);
 
   return (
     <>
