@@ -7,12 +7,7 @@ import Wallet from "../Wallet/Wallet";
 
 export default function Menu() {
   return (
-    <Navbar
-      collapseOnSelect
-      variant="dark"
-      expand="md"
-      className="fixed-top mt-3"
-    >
+    <Navbar collapseOnSelect variant="dark" expand="md" className="fixed-top">
       <Container fluid>
         <Navbar.Brand
           href="https://www.pumptoken.net/"
