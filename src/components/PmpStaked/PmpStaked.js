@@ -30,7 +30,7 @@ function PmpStaked() {
   useEffect(() => {
     const interval = setInterval(() => {
       fetchPmpStaked();
-    }, 15000);
+    }, 5000);
     fetchPmpStaked();
     return () => clearInterval(interval);
   }, [account, refresh]);
