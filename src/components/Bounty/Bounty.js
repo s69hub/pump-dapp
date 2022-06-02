@@ -19,9 +19,7 @@ function Bounty() {
         params: {},
       },
       onSuccess: (result) => {
-        console.log(result);
         setBounty(BigInt(result._hex).toString() / Math.pow(10, 18));
-        console.log(bounty);
       },
       onError: (error) => {
         console.log(error);
@@ -36,6 +34,10 @@ function Bounty() {
         functionName: "trigger",
         abi: triggerABI,
         params: {},
+      },
+      // onSuccess: () => setBountySuccessModalVisible(true),
+      onError: (error) => {
+        console.log(error);
       },
     });
   };
