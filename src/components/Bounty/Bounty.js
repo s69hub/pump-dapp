@@ -3,6 +3,7 @@ import { Container, Row, Col, Button } from "react-bootstrap";
 import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
 import currentBountyABI from "./CurrentBountyABI";
 import triggerABI from "./TriggerABI";
+import { limitDigits } from "../../helpers/formatters";
 
 /* global BigInt */
 
@@ -19,7 +20,9 @@ function Bounty() {
         params: {},
       },
       onSuccess: (result) => {
-        setBounty(BigInt(result._hex).toString() / Math.pow(10, 18));
+        setBounty(
+          limitDigits(BigInt(result._hex).toString() / Math.pow(10, 18), 3)
+        );
       },
       onError: (error) => {
         console.log(error);
