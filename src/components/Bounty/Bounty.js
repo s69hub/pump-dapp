@@ -57,7 +57,7 @@ function Bounty() {
       <Row>
         <Col>
           <Button size="lg" variant="bounty" onClick={handleTrigger}>
-            Grab {bounty} BNB
+            Grab {bounty} $PMP
           </Button>
         </Col>
       </Row>
