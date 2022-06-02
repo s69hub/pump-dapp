@@ -23,6 +23,7 @@ import allowanceABI from "./AllowanceABI";
 import { StateContext } from "../../contexts/StateContext";
 import PmpStaked from "../PmpStaked/PmpStaked";
 import Unstake from "../Unstake/Unstake";
+import Bounty from "../Bounty/Bounty";
 
 /* global BigInt */
 
@@ -158,7 +159,12 @@ function Stake() {
             </p>
           </Col>
         </Row>
-        <Row className="pt-5 mt-2">
+        <Row className="pt-4">
+          <Col className="text-center">
+            <Bounty />
+          </Col>
+        </Row>
+        <Row className="pt-4 mt-2">
           <Col lg={{ span: 5, offset: 1 }} className="text-center px-5">
             <Card>
               <Card.Body className="pb-4">
