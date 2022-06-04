@@ -146,8 +146,8 @@ function Unstake(props) {
                   <FormControl
                     onChange={handleUnstakeAmount}
                     type="number"
-                    placeholder="Enter $PMP Amount"
-                    aria-label="Enter $PMP Amount"
+                    placeholder="$PMP Amount"
+                    aria-label="$PMP Amount"
                     style={{
                       borderTopLeftRadius: "1.25rem",
                       borderBottomLeftRadius: "1.25rem",
