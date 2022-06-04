@@ -164,7 +164,7 @@ function Stake() {
             <Bounty />
           </Col>
         </Row>
-        <Row className="pt-4 mt-2">
+        <Row className="pt-4 mt-2 text-center">
           <Col lg={{ span: 5, offset: 1 }} className="text-center px-5">
             <Card>
               <Card.Body className="pb-4">
@@ -193,52 +193,72 @@ function Stake() {
 
                 {stakeStep === 0 && isApproved === true && (
                   <Fragment>
-                    <div className="text-center">
-                      <Button
-                        onClick={() => setStakeStep(1)}
-                        variant="primary"
-                        size="lg"
-                        className="me-sm-3 me-md-3 me-lg-3 me-0"
-                      >
-                        Stake $PMP
-                      </Button>
+                    <Container>
+                      <Row>
+                        <Col lg={12} className="d-flex justify-content-evenly">
+                          <Button
+                            onClick={() => setStakeStep(1)}
+                            variant="primary"
+                            size="lg"
+                            className="me-3 btn-wide"
+                          >
+                            Stake
+                          </Button>
 
-                      <Button
-                        onClick={() => setStakeStep(2)}
-                        variant="primary"
-                        size="lg"
-                        className="mt-xs-3 mt-lg-3 mt-xl-0 mt-0"
-                      >
-                        Unstake $PMP
-                      </Button>
-                    </div>
+                          <Button
+                            onClick={() => setStakeStep(2)}
+                            variant="primary"
+                            size="lg"
+                            className="btn-wide"
+                          >
+                            Unstake
+                          </Button>
+                        </Col>
+                      </Row>
+                    </Container>
                   </Fragment>
                 )}
                 {stakeStep === 1 && isApproved === true && (
-                  <>
-                    <InputGroup className="mt-3 px-4" size="lg">
-                      <FormControl
-                        onChange={handleStakeAmount}
-                        type="number"
-                        placeholder="Enter $PMP Amount"
-                        aria-label="Enter $PMP Amount"
-                        style={{
-                          borderTopLeftRadius: "1.25rem",
-                          borderBottomLeftRadius: "1.25rem",
-                        }}
-                      />
-                      <Button
-                        onClick={fetchStake}
-                        variant="primary"
-                        style={{
-                          borderTopRightRadius: "1.25rem",
-                          borderBottomRightRadius: "1.25rem",
-                        }}
-                      >
-                        Stake!
-                      </Button>
-                    </InputGroup>
-                  </>
+                  <Fragment>
+                    <Container>
+                      <Row>
+                        <Col xs={2}>
+                          <Button
+                            onClick={() => setStakeStep(0)}
+                            variant="primary"
+                            size="lg"
+                            className="me-1"
+                          >
+                            <i class="bi bi-chevron-double-left"></i>
+                          </Button>
+                        </Col>
+                        <Col xs={10}>
+                          <InputGroup className="" size="lg">
+                            <FormControl
+                              onChange={handleStakeAmount}
+                              type="number"
+                              placeholder="$PMP Amount"
+                              aria-label="$PMP Amount"
+                              style={{
+                                borderTopLeftRadius: "1.25rem",
+                                borderBottomLeftRadius: "1.25rem",
+                              }}
+                            />
+                            <Button
+                              onClick={fetchStake}
+                              variant="primary"
+                              style={{
+                                borderTopRightRadius: "1.25rem",
+                                borderBottomRightRadius: "1.25rem",
+                              }}
+                            >
+                              Stake!
+                            </Button>
+                          </InputGroup>
+                        </Col>
+                      </Row>
+                    </Container>
+                  </Fragment>
                 )}
 
                 {stakeStep === 2 && isApproved === true && (

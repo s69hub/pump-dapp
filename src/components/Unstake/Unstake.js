@@ -78,6 +78,15 @@ function Unstake(props) {
       <Row>
         {timeUU > 0 && (
           <Col>
+            <Button
+              onClick={() => props.setStakeStep(0)}
+              variant="primary"
+              size="lg"
+              width="30px"
+              className="me-3"
+            >
+              <i class="bi bi-chevron-double-left"></i>
+            </Button>
             <Button size="lg" disabled={true}>
               Unlocks In{" "}
               {
@@ -120,29 +129,45 @@ function Unstake(props) {
           </Col>
         )}
         {timeUU === 0 && (
-          <InputGroup className="px-4" size="lg">
-            <FormControl
-              onChange={handleUnstakeAmount}
-              type="number"
-              placeholder="Enter $PMP Amount"
-              aria-label="Enter $PMP Amount"
-              style={{
-                borderTopLeftRadius: "1.25rem",
-                borderBottomLeftRadius: "1.25rem",
-              }}
-            />
+          <Container>
+            <Row>
+              <Col xs={2}>
+                <Button
+                  onClick={() => props.setStakeStep(0)}
+                  variant="primary"
+                  size="lg"
+                  className="me-1"
+                >
+                  <i class="bi bi-chevron-double-left"></i>
+                </Button>
+              </Col>
+              <Col xs={10}>
+                <InputGroup size="lg">
+                  <FormControl
+                    onChange={handleUnstakeAmount}
+                    type="number"
+                    placeholder="Enter $PMP Amount"
+                    aria-label="Enter $PMP Amount"
+                    style={{
+                      borderTopLeftRadius: "1.25rem",
+                      borderBottomLeftRadius: "1.25rem",
+                    }}
+                  />
 
-            <Button
-              onClick={fetchUnstake}
-              variant="primary"
-              style={{
-                borderTopRightRadius: "1.25rem",
-                borderBottomRightRadius: "1.25rem",
-              }}
-            >
-              Unstake!
-            </Button>
-          </InputGroup>
+                  <Button
+                    onClick={fetchUnstake}
+                    variant="primary"
+                    style={{
+                      borderTopRightRadius: "1.25rem",
+                      borderBottomRightRadius: "1.25rem",
+                    }}
+                  >
+                    Unstake!
+                  </Button>
+                </InputGroup>
+              </Col>
+            </Row>
+          </Container>
         )}
       </Row>
     </Container>
