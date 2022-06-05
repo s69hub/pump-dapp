@@ -27,7 +27,7 @@ function Unstake(props) {
 
   const handleUnstakeAmount = (e) => {
     const amount = addDecimals(e.target.value, 18);
-    setUnstakeAmount(amount);
+    setUnstakeAmount(BigInt(amount));
     setEarlyAmount(e.target.value * 0.95);
   };
 

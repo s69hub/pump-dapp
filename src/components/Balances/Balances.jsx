@@ -5,6 +5,8 @@ import pmpABI from "./pmpABI";
 import xusdABI from "./xusdABI";
 import { StateContext } from "../../contexts/StateContext";
 
+  /* global BigInt */
+
 function Balances() {
   const { refresh, setRefrest } = useContext(StateContext);
   const { account } = useMoralis();
@@ -30,8 +32,8 @@ function Balances() {
   const fetchBalances = async () => {
     const pmpBalance = await contractProcessor.fetch({ params: pmp });
     const xusdBalance = await contractProcessor.fetch({ params: xusd });
-    setPmpTxt(pmpBalance?.toString() / 10 ** 18);
-    setXusdTxt(xusdBalance?.toString() / 10 ** 18);
+    setPmpTxt(BigInt(pmpBalance / 10 ** 18).toString());
+    setXusdTxt(BigInt(xusdBalance / 10 ** 18).toString());
   };
 
 
