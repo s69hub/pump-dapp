@@ -5,6 +5,7 @@ import metamask from "../../images/metamask.svg";
 import walletconnect from "../../images/walletconnect.svg";
 
 import { getEllipsisTxt } from "../../helpers/formatters";
+import Balances from "../Balances/Balances";
 
 function Wallet() {
   const [buttonText, setButtonText] = useState("Connect Wallet");
@@ -13,7 +14,8 @@ function Wallet() {
   const handleShow = () => setShow(true);
 
   const { switchNetwork } = useChain();
-  const { authenticate, user, account, chainId } = useMoralis();
+  const { authenticate, user, account, chainId, isAuthenticated, logout } =
+    useMoralis();
 
   const metamaskConnect = async () => {
     setButtonText("Connecting...");
@@ -84,32 +86,62 @@ function Wallet() {
         {buttonText}
       </Button>
 
-      <Modal
-        aria-labelledby="contained-modal-title-vcenter"
-        centered
-        show={show}
-        onHide={handleClose}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Choose Method</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Container className="text-center">
-            <Row>
-              <Col lg={6}>
-                <a onClick={metamaskConnect} href="#">
-                  <img src={metamask} alt="MetaMask" width={170} />
-                </a>
-              </Col>
-              <Col lg={6}>
-                <a onClick={walletConnect} href="#">
-                  <img src={walletconnect} alt="WalletConnect" width={190} />
-                </a>
-              </Col>
-            </Row>
-          </Container>
-        </Modal.Body>
-      </Modal>
+      {!isAuthenticated && (
+        <Modal
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+          show={show}
+          onHide={handleClose}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Choose Method</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Container className="text-center">
+              <Row>
+                <Col lg={6}>
+                  <a onClick={metamaskConnect} href="#">
+                    <img src={metamask} alt="MetaMask" width={170} />
+                  </a>
+                </Col>
+                <Col lg={6}>
+                  <a onClick={walletConnect} href="#">
+                    <img src={walletconnect} alt="WalletConnect" width={190} />
+                  </a>
+                </Col>
+              </Row>
+            </Container>
+          </Modal.Body>
+        </Modal>
+      )}
+
+      {isAuthenticated && (
+        <Modal
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+          show={show}
+          onHide={handleClose}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Disconnect</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Container className="text-center">
+              <Row>
+                <Col lg={12}>{account ? account : ""}</Col>
+                <Col lg={12} className="mb-2">
+                  <Balances />
+                </Col>
+                <Col lg={12}>
+                  <Button variant="danger" onClick={logout}>
+                    Disconnect
+                  </Button>
+                </Col>
+              </Row>
+            </Container>
+          </Modal.Body>
+        </Modal>
+      )}
     </>
   );
 }

@@ -37,7 +37,8 @@ function Stake() {
 
   const [rewards, setRewards] = useState(0);
 
-  const { user, account } = useMoralis();
+  const { user, account, isAuthenticated, authenticate, Moralis } =
+    useMoralis();
   const contractProcessor = useWeb3ExecuteFunction();
 
   const pendingRewards = {
@@ -109,6 +110,14 @@ function Stake() {
   };
 
   const fetchApprove = async () => {
+    if (!isAuthenticated) {
+      await Moralis.enableWeb3();
+      await authenticate({
+        onError: () => {
+          throw new Error("Connect to web3 provider failed!");
+        },
+      });
+    }
     await contractProcessor.fetch({
       params: approve,
       onError: (error) => {
