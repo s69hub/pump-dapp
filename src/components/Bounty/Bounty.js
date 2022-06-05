@@ -21,7 +21,7 @@ function Bounty() {
       },
       onSuccess: (result) => {
         setBounty(
-          limitDigits(BigInt(result._hex).toString() / Math.pow(10, 18), 3)
+          limitDigits(BigInt(result._hex).toString() / Math.pow(10, 18), 2)
         );
       },
       onError: (error) => {
@@ -51,7 +51,7 @@ function Bounty() {
     fetchBounty();
     const interval = setInterval(() => {
       fetchBounty();
-    }, 5000);
+    }, 2000);
     return () => clearInterval(interval);
   }, [account]);
 
