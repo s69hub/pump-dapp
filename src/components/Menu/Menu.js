@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Navbar, Container, Nav, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import pump from "../../images/pump.svg";
 import Balances from "../Balances/Balances";
 import Wallet from "../Wallet/Wallet";
+import { Moralis } from "react-moralis";
 
 export default function Menu() {
+  useEffect(() => {
+    Moralis.enableWeb3();
+  }, []);
+
   return (
     <Navbar collapseOnSelect variant="dark" expand="md" className="fixed-top">
       <Container fluid>
