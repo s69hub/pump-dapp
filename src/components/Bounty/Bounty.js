@@ -20,9 +20,13 @@ function Bounty() {
         params: {},
       },
       onSuccess: (result) => {
-        setBounty(
-          limitDigits(BigInt(result._hex).toString() / Math.pow(10, 18), 2)
-        );
+        if (result > 0) {
+          setBounty(
+            limitDigits(BigInt(result._hex).toString() / Math.pow(10, 18), 2)
+          );
+        } else {
+          setBounty(0);
+        }
       },
       onError: (error) => {
         console.log(error);

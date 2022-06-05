@@ -32,8 +32,8 @@ function Balances() {
   const fetchBalances = async () => {
     const pmpBalance = await contractProcessor.fetch({ params: pmp });
     const xusdBalance = await contractProcessor.fetch({ params: xusd });
-    setPmpTxt(BigInt(pmpBalance / 10 ** 18).toString());
-    setXusdTxt(BigInt(xusdBalance / 10 ** 18).toString());
+    setPmpTxt((pmpBalance / 10 ** 18).toString());
+    setXusdTxt((xusdBalance / 10 ** 18).toString());
   };
 
   useEffect(() => {
