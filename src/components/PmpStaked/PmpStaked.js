@@ -8,10 +8,13 @@ import balanceOfABI from "./BalanceOfABI";
 function PmpStaked() {
   const { refresh } = useContext(StateContext);
   const contractProcessor = useWeb3ExecuteFunction();
-  const { account } = useMoralis();
+  const { account, isAuthenticated } = useMoralis();
   const [pmpStaked, setPmpStaked] = useState(0);
 
   const fetchPmpStaked = async () => {
+    if (!isAuthenticated) {
+      setPmpStaked(0);
+    }
     await contractProcessor.fetch({
       params: balanceOf,
       onSuccess: (result) => {
@@ -30,12 +33,13 @@ function PmpStaked() {
   useEffect(() => {
     const interval = setInterval(() => {
       fetchPmpStaked();
-    }, 5000);
+    }, 15000);
+
     fetchPmpStaked();
     return () => clearInterval(interval);
-  }, [account, refresh]);
+  }, [account, refresh, isAuthenticated]);
 
-  return <>{pmpStaked}</>;
+  return <>{isAuthenticated ? pmpStaked : "0"}</>;
 }
 
 export default PmpStaked;

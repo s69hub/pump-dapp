@@ -72,7 +72,7 @@ function Wallet() {
   };
 
   useEffect(() => {
-    if (!account) {
+    if (!isAuthenticated) {
       setButtonText("Connect Wallet");
     } else {
       const userAddress = getEllipsisTxt(account, 4);

@@ -8,10 +8,14 @@ import { limitDigits } from "../../helpers/formatters";
 /* global BigInt */
 
 function Bounty() {
-  const { account } = useMoralis();
+  const { account, Moralis, isAuthenticated } = useMoralis();
   const contractProcessor = useWeb3ExecuteFunction();
 
   const fetchBounty = async () => {
+    if (!isAuthenticated) {
+      await Moralis.enableWeb3();
+    }
+
     await contractProcessor.fetch({
       params: {
         contractAddress: process.env.REACT_APP_FEERECEIVER_CONTRACT,

@@ -9,7 +9,7 @@ import { StateContext } from "../../contexts/StateContext";
 
 function Balances() {
   const { refresh, setRefrest } = useContext(StateContext);
-  const { account } = useMoralis();
+  const { account, isAuthenticated } = useMoralis();
   const contractProcessor = useWeb3ExecuteFunction();
 
   const pmp = {
@@ -47,7 +47,8 @@ function Balances() {
   return (
     <>
       <small className="text-center pe-md-4 pb-3 pb-md-0 text-gray fw-400">
-        {pmpTxt || 0} $PMP <br /> {xusdTxt || 0} $xUSD
+        {isAuthenticated ? pmpTxt : "0"} $PMP <br />{" "}
+        {isAuthenticated ? xusdTxt : "0"} $xUSD
       </small>
     </>
   );

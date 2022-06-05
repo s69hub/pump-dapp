@@ -185,7 +185,7 @@ function Stake() {
                   <br />
                   <PmpStaked />
                 </Card.Text>
-                {isApproved === false && stakeStep === 0 && (
+                {(!isApproved || !isAuthenticated) && stakeStep === 0 && (
                   <>
                     <div className="px-5">
                       <Button
@@ -200,7 +200,7 @@ function Stake() {
                   </>
                 )}
 
-                {stakeStep === 0 && isApproved === true && (
+                {stakeStep === 0 && isApproved && isAuthenticated && (
                   <Fragment>
                     <Container>
                       <Row>
@@ -227,7 +227,7 @@ function Stake() {
                     </Container>
                   </Fragment>
                 )}
-                {stakeStep === 1 && isApproved === true && (
+                {stakeStep === 1 && isApproved && isAuthenticated && (
                   <Fragment>
                     <Container>
                       <Row>
@@ -270,7 +270,7 @@ function Stake() {
                   </Fragment>
                 )}
 
-                {stakeStep === 2 && isApproved === true && (
+                {stakeStep === 2 && isApproved && isAuthenticated && (
                   <Unstake setStakeStep={setStakeStep} />
                 )}
               </Card.Body>
@@ -285,7 +285,7 @@ function Stake() {
                 <Card.Text className="fs-4">
                   Total xUSD Rewards
                   <br />
-                  {rewards}
+                  {isAuthenticated ? rewards : "0"}
                 </Card.Text>
                 <Button onClick={fetchClaim} variant="primary" size="lg">
                   Claim $xUSD
