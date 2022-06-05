@@ -4,13 +4,9 @@ import { Link } from "react-router-dom";
 import pump from "../../images/pump.svg";
 import Balances from "../Balances/Balances";
 import Wallet from "../Wallet/Wallet";
-import { useMoralis } from "react-moralis";
 
 export default function Menu() {
-  const { Moralis } = useMoralis();
-  useEffect(() => {
-    Moralis.enableWeb3();
-  }, []);
+
 
   return (
     <Navbar collapseOnSelect variant="dark" expand="md" className="fixed-top">
