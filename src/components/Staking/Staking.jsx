@@ -83,7 +83,7 @@ function Stake() {
 
   const handleStakeAmount = (e) => {
     const amount = addDecimals(e.target.value, 18);
-    setStakeAmount(amount);
+    setStakeAmount(BigInt(amount));
   };
 
   const fetchPendingRewards = async () => {
