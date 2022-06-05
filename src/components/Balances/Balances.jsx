@@ -36,7 +36,6 @@ function Balances() {
     setXusdTxt(BigInt(xusdBalance / 10 ** 18).toString());
   };
 
-
   useEffect(() => {
     const interval = setInterval(() => {
       fetchBalances();
