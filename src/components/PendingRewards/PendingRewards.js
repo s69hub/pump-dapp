@@ -62,8 +62,10 @@ function PendingRewards() {
       <Card.Text className="fs-4">
         Total xUSD Rewards
         <br />
-        {isAuthenticated ? limitDigits(rewards, 3) + " xUSD" : "0"} (
-        {isAuthenticated ? limitDigits(rewards * xusdPrice, 3) + " USD" : "0"})
+        {isAuthenticated ? limitDigits(rewards, 3) + " xUSD" : "0"}
+        {isAuthenticated
+          ? " (" + limitDigits(rewards * xusdPrice, 3) + " $USD)"
+          : ""}
       </Card.Text>
     </>
   );
