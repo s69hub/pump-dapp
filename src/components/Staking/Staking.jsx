@@ -148,7 +148,7 @@ function Stake() {
               Stake $PMP and watch your xUSD grow!
             </p>
             <p className="text-white fs-5">
-              $PMP = <PmpPrice />{" "}
+              $PMP = <PmpPrice />
             </p>
           </Col>
         </Row>

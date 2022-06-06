@@ -28,7 +28,7 @@ function PmpPrice() {
   }, []);
 
   return (
-    <Fragment>{pumpPrice ? limitDigits(pumpPrice, 6) + " USD" : ""}</Fragment>
+    <Fragment>{pumpPrice ? limitDigits(pumpPrice, 6) + " $USD" : ""}</Fragment>
   );
 }
 
