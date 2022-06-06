@@ -3,7 +3,8 @@ import { Button, Container, Col, Row, Modal } from "react-bootstrap";
 import { useChain, useMoralis } from "react-moralis";
 import metamask from "../../images/metamask.svg";
 import walletconnect from "../../images/walletconnect.svg";
-
+import dappbrowser from "../../images/dappbrowser.svg";
+import { BrowserView, MobileView } from "react-device-detect";
 import { getEllipsisTxt } from "../../helpers/formatters";
 import Balances from "../Balances/Balances";
 
@@ -101,7 +102,12 @@ function Wallet() {
               <Row>
                 <Col lg={6}>
                   <a onClick={metamaskConnect} href="#">
-                    <img src={metamask} alt="MetaMask" width={170} />
+                    <BrowserView>
+                      <img src={metamask} alt="MetaMask" width={170} />
+                    </BrowserView>
+                    <MobileView>
+                      <img src={dappbrowser} alt="Web3Provider" width={170} />
+                    </MobileView>
                   </a>
                 </Col>
                 <Col lg={6}>
