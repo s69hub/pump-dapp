@@ -15,7 +15,6 @@ import logo from "../../images/logo.svg";
 import xusd from "../../images/xusd.svg";
 import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
 import { addDecimals } from "../../helpers/formatters";
-import pendingRewardsABI from "./PendingRewardsABI";
 import approveABI from "./ApproveABI";
 import stakeABI from "./StakeABI";
 import claimABI from "./ClaimABI";
@@ -24,6 +23,7 @@ import { StateContext } from "../../contexts/StateContext";
 import PmpStaked from "../PmpStaked/PmpStaked";
 import Unstake from "../Unstake/Unstake";
 import Bounty from "../Bounty/Bounty";
+import PendingRewards from "../PendingRewards/PendingRewards";
 
 /* global BigInt */
 
@@ -35,18 +35,9 @@ function Stake() {
 
   const [stakeAmount, setStakeAmount] = useState(0);
 
-  const [rewards, setRewards] = useState(0);
-
   const { user, account, isAuthenticated, authenticate, Moralis } =
     useMoralis();
   const contractProcessor = useWeb3ExecuteFunction();
-
-  const pendingRewards = {
-    contractAddress: process.env.REACT_APP_STAKING_CONTRACT,
-    functionName: "pendingRewards",
-    abi: pendingRewardsABI,
-    params: { shareholder: account },
-  };
 
   const allowance = {
     contractAddress: process.env.REACT_APP_PMP_CONTRACT,
@@ -85,15 +76,6 @@ function Stake() {
   const handleStakeAmount = (e) => {
     const amount = addDecimals(e.target.value, 18);
     setStakeAmount(BigInt(amount));
-  };
-
-  const fetchPendingRewards = async () => {
-    await contractProcessor.fetch({
-      params: pendingRewards,
-      onSuccess: (data) => {
-        setRewards(BigInt(data._hex).toString() / Math.pow(10, 18));
-      },
-    });
   };
 
   const fetchAllowance = async () => {
@@ -148,13 +130,11 @@ function Stake() {
   };
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      fetchPendingRewards();
-    }, 3000);
-    fetchPendingRewards();
     fetchAllowance();
-    return () => clearInterval(interval);
-  }, [user, account, refresh]);
+    if (!isAuthenticated) {
+      setStakeStep(0);
+    }
+  }, [user, account, refresh, isAuthenticated]);
 
   return (
     <>
@@ -282,11 +262,7 @@ function Stake() {
                 <Card.Title className="pt-3">
                   <img src={xusd} alt="xUSD" width={100} />{" "}
                 </Card.Title>
-                <Card.Text className="fs-4">
-                  Total xUSD Rewards
-                  <br />
-                  {isAuthenticated ? rewards : "0"}
-                </Card.Text>
+                <PendingRewards />
                 <Button onClick={fetchClaim} variant="primary" size="lg">
                   Claim $xUSD
                 </Button>
