@@ -24,6 +24,7 @@ import PmpStaked from "../PmpStaked/PmpStaked";
 import Unstake from "../Unstake/Unstake";
 import Bounty from "../Bounty/Bounty";
 import PendingRewards from "../PendingRewards/PendingRewards";
+import PmpPrice from "../PmpPrice/PmpPrice";
 
 /* global BigInt */
 
@@ -146,9 +147,12 @@ function Stake() {
             <p className="pt-3 fs-3 text-white">
               Stake $PMP and watch your xUSD grow!
             </p>
+            <p className="text-white fs-5">
+              $PMP = <PmpPrice />{" "}
+            </p>
           </Col>
         </Row>
-        <Row className="pt-4">
+        <Row className="pt-2">
           <Col className="text-center">
             <Bounty />
           </Col>
