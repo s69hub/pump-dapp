@@ -98,7 +98,7 @@ function Unstake(props) {
             <Card className="mt-4 pb-3 card-inner">
               <p className="fs-5 my-2">Early Unlock (5% fee)</p>
 
-              <InputGroup className="px-4" size="lg">
+              <InputGroup className="px-3">
                 <FormControl
                   onChange={handleUnstakeAmount}
                   type="number"
