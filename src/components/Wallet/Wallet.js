@@ -7,6 +7,7 @@ import dappbrowser from "../../images/dappbrowser.svg";
 import { BrowserView, MobileView } from "react-device-detect";
 import { getEllipsisTxt } from "../../helpers/formatters";
 import Balances from "../Balances/Balances";
+import { ConnectButton, WalletModal } from "web3uikit";
 
 function Wallet() {
   const [buttonText, setButtonText] = useState("Connect Wallet");
@@ -86,39 +87,51 @@ function Wallet() {
       <Button variant="primary" onClick={handleShow}>
         {buttonText}
       </Button>
+      {/* <ConnectButton
+        chainId={56}
+        moralisAuth={true}
+        signingMessage="Welcome to PUMP!"
+      /> */}
 
       {!isAuthenticated && (
-        <Modal
-          aria-labelledby="contained-modal-title-vcenter"
-          centered
-          show={show}
-          onHide={handleClose}
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>Choose Method</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Container className="text-center">
-              <Row>
-                <Col lg={6}>
-                  <a onClick={metamaskConnect} href="#">
-                    <BrowserView>
-                      <img src={metamask} alt="MetaMask" width={170} />
-                    </BrowserView>
-                    <MobileView>
-                      <img src={dappbrowser} alt="Web3Provider" width={170} />
-                    </MobileView>
-                  </a>
-                </Col>
-                <Col lg={6}>
-                  <a onClick={walletConnect} href="#">
-                    <img src={walletconnect} alt="WalletConnect" width={190} />
-                  </a>
-                </Col>
-              </Row>
-            </Container>
-          </Modal.Body>
-        </Modal>
+        <WalletModal
+          moralisAuth="true"
+          signingMessage="Welcome to PUMP!"
+          chainId={56}
+          isOpened={show}
+          setIsOpened={setShow}
+        />
+        // <Modal
+        //   aria-labelledby="contained-modal-title-vcenter"
+        //   centered
+        //   show={show}
+        //   onHide={handleClose}
+        // >
+        //   <Modal.Header closeButton>
+        //     <Modal.Title>Choose Method</Modal.Title>
+        //   </Modal.Header>
+        //   <Modal.Body>
+        //     <Container className="text-center">
+        //       <Row>
+        //         <Col lg={6}>
+        //           <a onClick={metamaskConnect} href="#">
+        //             <BrowserView>
+        //               <img src={metamask} alt="MetaMask" width={170} />
+        //             </BrowserView>
+        //             <MobileView>
+        //               <img src={dappbrowser} alt="Web3Provider" width={170} />
+        //             </MobileView>
+        //           </a>
+        //         </Col>
+        //         <Col lg={6}>
+        //           <a onClick={walletConnect} href="#">
+        //             <img src={walletconnect} alt="WalletConnect" width={190} />
+        //           </a>
+        //         </Col>
+        //       </Row>
+        //     </Container>
+        //   </Modal.Body>
+        // </Modal>
       )}
 
       {isAuthenticated && (
