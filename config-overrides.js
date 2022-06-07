@@ -2,7 +2,6 @@ module.exports = function override(config, env) {
   console.log("override");
   let loaders = config.resolve;
   loaders.fallback = {
-    os: require.resolve("os-browserify/browser"),
     fs: false,
     tls: false,
     net: false,

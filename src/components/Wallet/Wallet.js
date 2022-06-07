@@ -7,10 +7,7 @@ import dappbrowser from "../../images/dappbrowser.svg";
 import { BrowserView, MobileView } from "react-device-detect";
 import { getEllipsisTxt } from "../../helpers/formatters";
 import Balances from "../Balances/Balances";
-import {
-  ConnectButton,
-  WalletModal,
-} from "../../../node_modules/web3uikit/dist";
+import { ConnectButton, WalletModal } from "web3uikit";
 
 function Wallet() {
   const [buttonText, setButtonText] = useState("Connect Wallet");
