@@ -87,19 +87,14 @@ function Wallet() {
       <Button variant="primary" onClick={handleShow}>
         {buttonText}
       </Button>
-      {/* <ConnectButton
-        chainId={56}
-        moralisAuth={true}
-        signingMessage="Welcome to PUMP!"
-      /> */}
 
       {!isAuthenticated && (
         <WalletModal
-          moralisAuth="true"
-          signingMessage="Welcome to PUMP!"
+          moralisAuth
           chainId={56}
           isOpened={show}
           setIsOpened={setShow}
+          key="walletModal"
         />
         // <Modal
         //   aria-labelledby="contained-modal-title-vcenter"

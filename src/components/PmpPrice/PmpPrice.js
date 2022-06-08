@@ -24,7 +24,7 @@ function PmpPrice() {
   useEffect(() => {
     const interval = setInterval(() => {
       fetchPmpPrice();
-    }, 5000);
+    }, 10000);
   }, []);
 
   return (
