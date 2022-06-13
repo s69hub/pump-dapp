@@ -62,7 +62,7 @@ function Unstake(props) {
     await contractProcessor.fetch({
       params: timeUntilUnlock,
       onSuccess: (result) => {
-        const TUU = BigInt(result._hex).toString() * 1000;
+        const TUU = BigInt(result._hex).toString() * 1000 * 3;
         setTimeUU(TUU);
       },
     });
