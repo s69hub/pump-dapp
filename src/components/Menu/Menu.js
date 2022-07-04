@@ -3,6 +3,7 @@ import { Navbar, Container, Nav, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import pump from "../../images/pump.svg";
 import Balances from "../Balances/Balances";
+import StakingV1 from "../StakingV1/StakingV1";
 import Wallet from "../Wallet/Wallet";
 
 export default function Menu() {
@@ -20,11 +21,9 @@ export default function Menu() {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
-          {/* <Nav>
-            <Link to="/" className="nav-link">
-              Home
-            </Link>
-          </Nav> */}
+          <Nav className="text-center">
+            <StakingV1 />
+          </Nav>
           <Nav className="me-0 ms-auto pe-md-3">
             <Balances />
             <Wallet />

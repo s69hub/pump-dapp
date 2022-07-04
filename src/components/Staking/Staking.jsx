@@ -36,7 +36,7 @@ function Stake() {
 
   const [stakeAmount, setStakeAmount] = useState(0);
 
-  const { user, account, isAuthenticated, authenticate, Moralis } =
+  const { user, account, isAuthenticated, authenticate, Moralis, chainId } =
     useMoralis();
   const contractProcessor = useWeb3ExecuteFunction();
 
@@ -135,7 +135,7 @@ function Stake() {
     if (!isAuthenticated) {
       setStakeStep(0);
     }
-  }, [user, account, refresh, isAuthenticated]);
+  }, [user, account, refresh, isAuthenticated, chainId]);
 
   return (
     <>

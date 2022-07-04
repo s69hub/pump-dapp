@@ -24,7 +24,7 @@ function PmpStaked() {
   };
 
   const balanceOf = {
-    contractAddress: process.env.REACT_APP_STAKING_CONTRACT,
+    contractAddress: process.env.REACT_APP_STAKING_V2_CONTRACT,
     functionName: "balanceOf",
     abi: balanceOfABI,
     params: { account: account },
