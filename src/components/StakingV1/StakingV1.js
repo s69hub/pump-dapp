@@ -95,8 +95,8 @@ function StakingV1() {
         <Modal.Body>
           <h5>Welcome to a new era!</h5>
           <h6>
-            Where a token called DUMP never goes down, and neither will your
-            rewards!
+            Where a token called DUMP never goes down in price, and neither will
+            your rewards!
           </h6>
           <p className="pt-2">
             We've upgraded our staking contract to <b>V2</b>.
