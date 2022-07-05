@@ -36,7 +36,7 @@ function Stake() {
 
   const [stakeAmount, setStakeAmount] = useState(0);
 
-  const { user, account, isAuthenticated, authenticate, Moralis } =
+  const { user, account, isAuthenticated, authenticate, Moralis, chainId } =
     useMoralis();
   const contractProcessor = useWeb3ExecuteFunction();
 
@@ -46,19 +46,19 @@ function Stake() {
     abi: allowanceABI,
     params: {
       holder: account,
-      spender: process.env.REACT_APP_STAKING_CONTRACT,
+      spender: process.env.REACT_APP_STAKING_V2_CONTRACT,
     },
   };
 
   const stake = {
-    contractAddress: process.env.REACT_APP_STAKING_CONTRACT,
+    contractAddress: process.env.REACT_APP_STAKING_V2_CONTRACT,
     functionName: "stake",
     abi: stakeABI,
     params: { amount: BigInt(stakeAmount) },
   };
 
   const claimRewards = {
-    contractAddress: process.env.REACT_APP_STAKING_CONTRACT,
+    contractAddress: process.env.REACT_APP_STAKING_V2_CONTRACT,
     functionName: "claimRewards",
     abi: claimABI,
     params: {},
@@ -69,7 +69,7 @@ function Stake() {
     functionName: "approve",
     abi: approveABI,
     params: {
-      spender: process.env.REACT_APP_STAKING_CONTRACT,
+      spender: process.env.REACT_APP_STAKING_V2_CONTRACT,
       amount: BigInt(Math.pow(2, 128) - 1),
     },
   };
@@ -135,7 +135,7 @@ function Stake() {
     if (!isAuthenticated) {
       setStakeStep(0);
     }
-  }, [user, account, refresh, isAuthenticated]);
+  }, [user, account, refresh, isAuthenticated, chainId]);
 
   return (
     <>

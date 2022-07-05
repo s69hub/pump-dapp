@@ -3,6 +3,7 @@ import { Navbar, Container, Nav, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import pump from "../../images/pump.svg";
 import Balances from "../Balances/Balances";
+import StakingV1 from "../StakingV1/StakingV1";
 import Wallet from "../Wallet/Wallet";
 
 export default function Menu() {
@@ -20,14 +21,16 @@ export default function Menu() {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
-          <Nav className="text-center">
+          <Nav className="text-center mt-3 mt-md-0">
+            <StakingV1 />
+
             <a
               href="https://pancakeswap.finance/swap?outputCurrency=0x91Ebe3E0266B70be6AE41b8944170A27A08E3C2e"
               target="blank"
             >
               <Button
                 variant="primary"
-                className="mb-3 mb-md-0 me-0 me-md-3 mt-3 mt-md-0"
+                className="mb-3 mb-md-0 me-0 me-md-3 mt-3 mt-md-0 ms-0 ms-md-3"
               >
                 Buy with <b className="text-warning">BNB</b>
               </Button>

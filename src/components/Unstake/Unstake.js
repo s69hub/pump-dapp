@@ -34,14 +34,14 @@ function Unstake(props) {
   const contractProcessor = useWeb3ExecuteFunction();
 
   const timeUntilUnlock = {
-    contractAddress: process.env.REACT_APP_STAKING_CONTRACT,
+    contractAddress: process.env.REACT_APP_STAKING_V2_CONTRACT,
     functionName: "timeUntilUnlock",
     abi: timeUntileUnlockABI,
     params: { user: account },
   };
 
   const unstake = {
-    contractAddress: process.env.REACT_APP_STAKING_CONTRACT,
+    contractAddress: process.env.REACT_APP_STAKING_V2_CONTRACT,
     functionName: "withdraw",
     abi: unstakeABI,
     params: { amount: BigInt(unstakeAmount) },
