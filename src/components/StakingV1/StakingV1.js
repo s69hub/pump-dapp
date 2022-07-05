@@ -22,7 +22,7 @@ function StakingV1() {
     await contractProcessor.fetch({
       params: balanceOf,
       onSuccess: (result) => {
-        setPmpStaked(BigInt(result._hex).toString() / Math.pow(10, 18));
+        setPmpStaked(result._hex.toString() / Math.pow(10, 18));
       },
     });
   };
@@ -31,24 +31,39 @@ function StakingV1() {
     await contractProcessor.fetch({
       params: pendingRewards,
       onSuccess: (result) => {
-        setRewards(BigInt(result._hex).toString() / Math.pow(10, 18));
+        setRewards(result._hex.toString() / Math.pow(10, 18));
       },
     });
   };
 
   const handleUnstakeAndClaim = async () => {
-    console.log(BigInt(pmpStaked * 1e18).toString());
-    // await contractProcessor.fetch({
-    //   params: unstakeAndClaim,
-    //   onSuccess: setModalShow(false),
-    // });
+    await contractProcessor.fetch({
+      params: balanceOf,
+      onSuccess: (result) => {
+        // setPmpStaked(result._hex.toString());
+        contractProcessor.fetch({
+          params: {
+            contractAddress: process.env.REACT_APP_STAKING_V1_CONTRACT,
+            functionName: "withdraw",
+            abi: withdrawABI,
+            params: {
+              amount: result._hex.toString(),
+            },
+          },
+          onError: (error) => console.log(error),
+          onSuccess: setModalShow(false),
+        });
+      },
+    });
   };
 
   const unstakeAndClaim = {
     contractAddress: process.env.REACT_APP_STAKING_V1_CONTRACT,
     functionName: "withdraw",
     abi: withdrawABI,
-    params: { amount: BigInt(pmpStaked * 1e18).toString() },
+    params: {
+      amount: pmpStaked * Math.pow(10, 18),
+    },
   };
 
   const balanceOf = {
@@ -74,10 +89,10 @@ function StakingV1() {
     <>
       <Button
         variant="primary"
-        className="ms-3"
+        className="ms-0 ms-md-3"
         onClick={() => setModalShow(true)}
       >
-        Staking v1
+        Staking <b>v1</b>
       </Button>
 
       <Modal
@@ -88,7 +103,7 @@ function StakingV1() {
       >
         <Modal.Header>
           <Modal.Title id="contained-modal-title-vcenter">
-            PUMP Staking V1
+            PUMP Staking v1
           </Modal.Title>
           <CloseButton onClick={() => setModalShow(false)} />
         </Modal.Header>
