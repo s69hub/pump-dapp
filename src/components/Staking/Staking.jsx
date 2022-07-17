@@ -12,7 +12,7 @@ import {
 
 import pump from "../../images/pump.svg";
 import logo from "../../images/logo.svg";
-import xusd from "../../images/xusd.svg";
+import dump from "../../images/dumplogo.svg";
 import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
 import { addDecimals } from "../../helpers/formatters";
 import approveABI from "./ApproveABI";
@@ -145,7 +145,7 @@ function Stake() {
             <img src={pump} alt="PUMP" height="125px" className="img-fluid" />
             <br />
             <p className="pt-3 fs-3 text-white">
-              Stake $PMP and watch your xUSD grow!
+              Stake $PMP and watch your $DUMP grow!
             </p>
             <p className="text-white fs-5">
               $PMP = <PmpPrice />
@@ -264,11 +264,11 @@ function Stake() {
             <Card>
               <Card.Body className="pb-4">
                 <Card.Title className="pt-3">
-                  <img src={xusd} alt="xUSD" width={100} />{" "}
+                  <img src={dump} alt="xUSD" width={80} />
                 </Card.Title>
                 <PendingRewards />
                 <Button onClick={fetchClaim} variant="primary" size="lg">
-                  Claim $xUSD
+                  Claim Rewards
                 </Button>
               </Card.Body>
             </Card>
